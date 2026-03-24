@@ -1,0 +1,116 @@
+.splash-screen {
+  /* Single dark purple tone across the splash */
+  --background: #7a4cf8;
+  background: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.splash-card {
+  /* Transparent container so only one purple tone is visible */
+  width: auto;
+  max-width: none;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* center vertically */
+  min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
+/* Animated logo container with subtle pulsing */
+.logo-wrap {
+  /* Responsive size relative to viewport; centered */
+  width: clamp(128px, 40vmin, 300px);
+  height: clamp(128px, 40vmin, 300px);
+  border-radius: 24px;
+  background: transparent; /* remove inner purple to avoid two tones */
+  padding: 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  will-change: transform;
+  animation: softPulse 2.6s ease-in-out infinite;
+}
+
+/* soft purple glow around the container */
+/* Remove purple glow to keep a single purple tone */
+.logo-wrap::before { content: none; }
+
+/* light halo over the note to highlight it */
+.logo-wrap::after {
+  content: '';
+  position: absolute;
+  width: 72%;
+  height: 72%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.35), rgba(255,255,255,0) 60%);
+  pointer-events: none;
+  z-index: 2;
+  animation: haloPulse 3s ease-in-out infinite;
+}
+
+.splash-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  display: block;
+  border-radius: 16px; /* slightly rounded corners on image */
+}
+
+@keyframes softPulse {
+  0% { transform: scale(0.96); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(0.96); }
+}
+
+@keyframes haloPulse {
+  0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.55; }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.55; }
+}
+
+.app-title {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 6px 0 8px 0;
+}
+
+.subtitle {
+  color: rgba(255,255,255,0.9);
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  opacity: 0.8;
+}
+
+.dot.active {
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  opacity: 1;
+}

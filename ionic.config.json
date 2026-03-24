@@ -1,0 +1,7 @@
+{
+  "name": "FindYourSong",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

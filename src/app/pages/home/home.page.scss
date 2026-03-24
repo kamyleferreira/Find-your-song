@@ -1,0 +1,433 @@
+.home-content {
+  /* full viewport pastel background so colors occupy the entire screen */
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(180deg, #fdf5fb 0%, #f7e9f2 100%);
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(env(safe-area-inset-top, 16px) + 20px) 0 calc(env(safe-area-inset-bottom, 24px) + 120px) 0;
+  /* avoid double horizontal padding when `ion-padding` utility class is present */
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Larger, more prominent searchbar */
+ion-searchbar.search {
+  /* fixed, centered searchbar at top of viewport */
+  position: fixed;
+  top: env(safe-area-inset-top, 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(920px, calc(100% - 32px));
+  --background: #fff;
+  --border-radius: 28px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --placeholder-color: #9b5490;
+  height: 58px;
+  font-size: 1.05rem;
+  margin: 0;
+  display: block;
+  z-index: 1200;
+}
+
+/* Panel containing the UI to resemble phone card */
+.panel {
+  width: 100%;
+  .card {
+    width: 120px;
+    margin-right: 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card .cover {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .card .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .card .cover .progress-svg {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 56px;
+    height: 56px;
+    z-index: 1;
+  }
+  .card .cover .progress-svg .bg {
+    stroke: rgba(0,0,0,0.12);
+  }
+  .card .cover .progress-svg .progress {
+    stroke: var(--ion-color-primary);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 200ms linear;
+  }
+  .card .cover .progress-svg .progress.active {
+    transition: stroke-dashoffset 120ms linear;
+  }
+  .card .cover .play.small {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(179, 78, 192, 0.6);
+    z-index: 2;
+  }
+  .card .cover .fav-btn.small {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.9);
+    border-radius: 6px;
+    z-index: 2;
+  }
+  /* card layout handled per-card where needed; avoid making the entire panel a grid */
+}
+
+.card.small .cover {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+}
+
+.fav-btn {
+  position: absolute;
+  right: 64px; /* place it to the left of the preview button */
+  top: 12px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+  border: none;
+}
+
+.fav-btn img { width:16px; height:16px }
+
+.card { position: relative }
+
+.play-container {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.progress-svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  display: block;
+  overflow: visible; /* allow stroke to render cleanly */
+  pointer-events: none;
+}
+
+.progress-svg .bg { stroke: rgba(0,0,0,0.06); stroke-linecap: butt }
+.progress-svg .progress { stroke: #d88ed8; stroke-linecap: butt; transform: rotate(-90deg); transform-origin: 50% 50%; transition: none }
+.progress-svg .progress.active { transition: stroke-dashoffset 120ms linear }
+
+.middle {
+  flex: 1;
+}
+
+.title {
+  font-weight: 700;
+  color: #3d1352;
+  font-size: 0.98rem;
+}
+
+.artist {
+  font-size: 0.85rem;
+  color: #8b6b86;
+  margin-top: 4px;
+}
+
+.right {
+  display:flex;
+  align-items:center;
+}
+
+.play {
+  width:38px;
+  height:38px;
+  border-radius: 999px;
+  background: linear-gradient(180deg,#ffffff 0%, #f0e9f7 100%);
+  border: 1px solid rgba(109,61,110,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 4px 8px rgba(109,61,110,0.06);
+}
+
+.play img { width:18px; height:18px }
+
+.recent-grid, .popular-grid {
+  display: grid;
+  /* default mobile: 2 columns (each column is flexible) */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 8px 8px 16px 8px;
+}
+.square-card {
+  width: 100%;
+  max-width: none;
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+}
+/* ensure grid items can shrink and not overflow the column */
+.recent-grid > .square-card, .popular-grid > .square-card { min-width: 0 }
+.card-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* square */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.card-cover img {
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  width:100%; height:100%; object-fit:cover;
+  background: linear-gradient(180deg, #ffffff 0%, #fff5fb 100%);
+}
+.card-cover .play.small {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width:28px; height:28px;
+}
+.card-cover .fav-btn.small {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  width:24px; height:24px;
+}
+.card-meta { padding: 0 4px }
+.card-title { font-weight:700; font-size:1.04rem; color:#382243; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.card-artist { font-size:0.88rem; color:#8b6b86; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+/* Panel visual: remove border/shadow and use only page background */
+.panel {
+  width: calc(100% - 32px);
+  max-width: none;
+  background: #fff5fb; /* pastel pink fill restored */
+  border: none;        /* keep without border */
+  border-radius: 0;    /* no card border shape */
+  /* keep spacing for fixed searchbar and footer */
+  padding: calc(env(safe-area-inset-top, 12px) + 64px) calc(16px + env(safe-area-inset-right, 0px)) 120px calc(16px + env(safe-area-inset-left, 0px));
+  box-shadow: none;    /* no shadow */
+  margin: 0 auto;
+}
+
+/* ensure elements calculate sizes including borders/padding to avoid overflow */
+.home-content *,
+.panel,
+.recent-grid,
+.popular-grid,
+.square-card,
+.card-cover {
+  box-sizing: border-box;
+}
+
+/* Responsive breakpoints for different screen sizes */
+@media (min-width: 600px) {
+  /* tablet: 3 columns */
+  .recent-grid, .popular-grid { grid-template-columns: repeat(3, 1fr); gap: 14px }
+}
+
+@media (min-width: 900px) {
+  /* small desktop: 4 columns */
+  .recent-grid, .popular-grid { grid-template-columns: repeat(4, 1fr); gap: 16px }
+}
+
+@media (min-width: 1200px) {
+  /* large desktop: 6 columns */
+  .recent-grid, .popular-grid { grid-template-columns: repeat(6, 1fr); gap: 18px }
+  .panel { padding: 96px 32px 24px 32px }
+}
+
+/* section title directly below the searchbar, left aligned */
+.section-title {
+  margin: 4px 0 14px 6px;
+  font-size: 1.18rem; /* larger like Favorites */
+  color: #382243;
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-align: left;
+}
+
+.results-header { display:flex; align-items:center; justify-content:space-between; gap:8px; margin: 0 4px 8px 4px; }
+.actions { display:flex; align-items:center; gap:8px; }
+.query-chip {
+  background: #ffffff;
+  border: 1px solid rgba(109,61,110,0.15);
+  border-radius: 999px;
+  padding: 4px 12px 4px 14px;
+  font-size: 0.78rem;
+  display:flex; align-items:center; gap:6px;
+  color:#6d3d6e;
+  box-shadow: 0 3px 6px rgba(109,61,110,0.06);
+}
+.query-chip ion-icon { font-size:14px; opacity:0.7 }
+.query-chip:active { transform: scale(0.96); }
+
+.merged-grid .badge-history {
+  position:absolute;
+  top:6px; right:6px;
+  background: rgba(184,74,192,0.85);
+  color:#fff;
+  font-size: 0.55rem;
+  padding:2px 6px;
+  border-radius: 6px;
+  letter-spacing:0.5px;
+  text-transform: uppercase;
+  z-index: 3;
+}
+
+/* Specific layout for Últimas ouvidas (last-played) */
+.last-played-grid {
+  grid-template-columns: repeat(2, 1fr); /* default mobile: 2 columns */
+  gap: 14px;
+}
+.last-played-grid .square-card {
+  width: 100%;
+  max-width: none;
+}
+
+@media (min-width: 900px) {
+  .last-played-grid { grid-template-columns: repeat(4, 1fr); gap: 20px }
+  .last-played-grid .square-card { width: auto; max-width: none }
+  .last-played-grid .card-cover { border-radius: 14px }
+}
+
+@media (min-width: 1400px) {
+  .last-played-grid { grid-template-columns: repeat(4, 260px); justify-content: center }
+  .last-played-grid .square-card { width: 260px; max-width: 260px }
+  .last-played-grid .card-cover { border-radius: 16px }
+}
+
+@media (max-width: 599px) {
+  .recent-grid, .popular-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px }
+  .square-card { width: 100%; max-width: none }
+  /* cap the cover height so two cards remain visible side-by-side without huge images */
+  .card-cover { max-height: 160px; }
+  ion-searchbar.search { height: 52px; font-size: 0.98rem; top: env(safe-area-inset-top,12px); width: calc(100% - 24px); transform: translateX(-50%); }
+  /* reduce panel horizontal margin on very small screens and give room for footer */
+  .panel { width: calc(100% - 20px); padding: calc(env(safe-area-inset-top,12px) + 56px) 10px 100px 10px; margin-left: auto; margin-right: auto }
+  .card-cover { max-height: 200px; }
+  .card-title { font-size: 1rem }
+}
+
+.loading,
+.empty {
+  color: #6d3d6e;
+  font-size: 0.9rem;
+  margin-top: 12px;
+  text-align:center;
+}
+
+ion-footer {
+  --background: transparent;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: none;
+}
+
+.bottom-nav {
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,238,246,0.8));
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+.nav-btn { background: transparent; border: none; padding:6px }
+.nav-btn img { width:20px; height:20px; opacity:0.9 }
+.nav-btn ion-icon { font-size: 22px; opacity: 0.95; color: #6d3d6e }
+
+/* Pulsing placeholder card for missing covers */
+.placeholder-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7a5cff 0%, #8e5cff 35%, #9a60ff 100%);
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.placeholder-card::before {
+  content: '';
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: radial-gradient(circle at center, rgba(255,255,255,0.35), rgba(255,255,255,0) 60%);
+  filter: blur(20px);
+  animation: pulseGlow 2.2s ease-in-out infinite;
+}
+
+.placeholder-card ion-icon {
+  font-size: 56px;
+  color: #ffd2e6; /* pastel pink */
+  z-index: 1;
+  opacity: 0.95;
+}
+
+@keyframes pulseGlow {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.55; }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.55; }
+}
+
+/* Subtle hover grow for desktop devices */
+@media (hover: hover) and (pointer: fine) {
+  .square-card .card-cover {
+    transition: transform 160ms ease, box-shadow 160ms ease;
+    will-change: transform;
+  }
+  .square-card:hover .card-cover,
+  .square-card:focus-within .card-cover {
+    transform: scale(1.04);
+    box-shadow: 0 10px 22px rgba(122,92,255,0.18);
+    z-index: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .square-card .card-cover { transition: none; }
+}

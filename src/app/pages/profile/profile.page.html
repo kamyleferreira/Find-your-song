@@ -1,0 +1,108 @@
+<ion-content class="profile-content">
+
+  <div class="profile-panel">
+
+    <div class="avatar-wrap">
+      <ng-container *ngIf="photoPreview; else currentPhoto">
+        <img [src]="photoPreview" alt="Pré-visualização do avatar" class="avatar-img" />
+      </ng-container>
+
+      <ng-template #currentPhoto>
+        <ng-container *ngIf="userData?.photoURL; else avatarPh">
+          <img [src]="userData.photoURL?.secure_url || userData.photoURL" alt="Avatar" class="avatar-img" />
+        </ng-container>
+      </ng-template>
+
+      <ng-template #avatarPh>
+        <div class="avatar-ph">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="avatar-actions">
+      <ion-button fill="clear" class="link" (click)="fileInput.click()">Alterar foto</ion-button>
+      <input #fileInput type="file" accept="image/*" hidden (change)="onFileChange($event)" />
+    </div>
+<div>
+     <!-- Botão para abrir a câmera -->
+  <ion-button fill="clear" class="link" (click)="openCamera()">
+    Tirar foto
+  </ion-button>
+</div>
+
+    <h1 class="display-name" *ngIf="!editingName" (click)="startEdit('name')" tabindex="0">
+      {{ name || 'Nome do Usuário' }}
+    </h1>
+
+    <div class="inline-edit" *ngIf="editingName">
+      <input class="inline-input" type="text" [(ngModel)]="name"
+             (keyup.enter)="stopEdit('name')" (blur)="stopEdit('name')" />
+    </div>
+
+    <div class="stats">
+      <ion-button fill="clear" class="stat-card link" [routerLink]="['/favorites']">
+        <div class="label">Músicas favoritas</div>
+        <div class="value">{{ favoritesCount }}</div>
+      </ion-button>
+
+      <ion-button fill="clear" class="stat-card link" [routerLink]="['/recent']">
+        <div class="label">Últimos ouvidos</div>
+        <div class="value alt">{{ recentCount }}</div>
+      </ion-button>
+    </div>
+
+    <div class="about-card">
+      <div class="title">Sobre mim</div>
+
+      <div class="text" *ngIf="!editingBio" (click)="startEdit('bio')" tabindex="0">
+        {{ bio || '—' }}
+      </div>
+
+      <div class="inline-edit" *ngIf="editingBio">
+        <textarea rows="3" class="inline-textarea"
+                  [(ngModel)]="bio"
+                  (keydown.control.enter)="stopEdit('bio')"
+                  (blur)="stopEdit('bio')"></textarea>
+      </div>
+    </div>
+
+    <ion-button class="save-btn" expand="block" (click)="saveProfile()">
+      Salvar alterações
+    </ion-button>
+
+    <ion-button class="logout-btn" expand="block" (click)="logout()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      Sair da conta
+    </ion-button>
+
+    <ion-button class="logout-btn delete-btn" expand="block" color="danger" (click)="confirmDeleteAccount()">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Excluir conta
+    </ion-button>
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="bottom-nav">
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/home']">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/favorites']">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/recent']">
+        <ion-icon name="musical-notes-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" class="nav-btn active" [routerLink]="['/profile']">
+        <ion-icon name="person"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,49 @@
+<ion-content class="favorites-content">
+  <h1 class="fav-heading" *ngIf="favoritesView.length > 0">Favoritos</h1>
+  <div *ngIf="favoritesView.length === 0" class="empty">Nenhum favorito ainda.</div>
+  <div class="fav-list" *ngIf="favoritesView.length > 0">
+    <div class="fav-row" *ngFor="let f of favoritesView" (click)="playPreview(f)">
+      <div class="cover-wrap">
+        <ng-container *ngIf="!f.usePlaceholder; else favPh">
+          <img class="cover" [src]="f.cover" (error)="onImgError($event, f)" alt="Capa" />
+        </ng-container>
+        <ng-template #favPh>
+          <div class="placeholder-card small">
+            <ion-icon name="musical-notes-outline"></ion-icon>
+          </div>
+        </ng-template>
+      </div>
+      <div class="meta">
+        <div class="title">{{ f.title }}</div>
+        <div class="artist">{{ f.artist }}</div>
+      </div>
+      <div class="actions" (click)="$event.stopPropagation()">
+        <button class="play-btn" (click)="playPreview(f)">
+          <ion-icon [name]="getPlayIcon(f)" aria-hidden="true"></ion-icon>
+        </button>
+        <button class="fav-toggle" (click)="toggleFavorite(f)">
+          <ion-icon [name]="getFavoriteToggleIcon(f)"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="bottom-nav">
+      <button class="nav-btn" (click)="navigateTo('/home')" aria-label="Início">
+        <ion-icon name="home-outline"></ion-icon>
+      </button>
+      <button class="nav-btn active" aria-current="page" (click)="navigateTo('/favorites')" aria-label="Favoritos">
+        <ion-icon name="heart"></ion-icon>
+      </button>
+      <button class="nav-btn" (click)="navigateTo('/recent')" aria-label="Recentes">
+        <ion-icon name="musical-notes-outline"></ion-icon>
+      </button>
+      <button class="nav-btn" (click)="navigateTo('/profile')" aria-label="Perfil">
+        <ion-icon name="person-outline"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

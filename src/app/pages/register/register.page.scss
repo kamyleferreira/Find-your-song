@@ -1,0 +1,161 @@
+:host {
+	ion-content.register-content {
+		--background: linear-gradient(180deg, #fef3ff 0%, #f9f8ff 55%, #ffffff 100%);
+	}
+}
+
+.register-wrapper {
+	min-height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 48px 20px 32px;
+}
+
+.register-card {
+	position: relative;
+	width: 100%;
+	max-width: 440px;
+	background: #ffffff;
+	border-radius: 28px;
+	padding: 42px 32px 36px;
+	box-shadow: 0 26px 54px rgba(140, 109, 255, 0.16);
+	overflow: hidden;
+}
+
+.register-card > * {
+	position: relative;
+	z-index: 1;
+}
+
+.card-accent {
+	position: absolute;
+	inset: 0;
+	height: 150px;
+	background: linear-gradient(135deg, #7d7bff 0%, #ff87c6 100%);
+	opacity: 0.24;
+	z-index: 0;
+}
+
+.register-card h1 {
+	margin: 18px 0 40px;
+	font-size: 1.6rem;
+	font-weight: 600;
+	text-align: center;
+	color: #5b56c7;
+}
+
+.register-card form {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+}
+
+.input-group {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.input-group label {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: #7069a6;
+}
+
+.input-wrapper {
+	display: flex;
+	align-items: center;
+	background: #f8f6ff;
+	border-radius: 18px;
+	border: 1px solid rgba(122, 99, 255, 0.18);
+	padding: 0 16px;
+	height: 56px;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+	border-color: rgba(122, 99, 255, 0.55);
+	box-shadow: 0 0 0 4px rgba(122, 99, 255, 0.12);
+}
+
+.input-wrapper ion-icon {
+	color: #7a63ff;
+	font-size: 1.25rem;
+	margin-right: 12px;
+}
+
+.with-trailing ion-icon.trailing {
+	margin-right: 0;
+	margin-left: 12px;
+	color: #aca8cf;
+	font-size: 1.2rem;
+}
+
+.input-wrapper ion-input {
+	flex: 1;
+	font-size: 0.97rem;
+	--padding-start: 0;
+	--padding-end: 0;
+	--highlight-color-focused: transparent;
+	--placeholder-color: #b6b2d6;
+	--placeholder-opacity: 1;
+	color: #312d63;
+}
+
+ion-button {
+	--border-radius: 18px;
+	height: 52px;
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+.register-btn {
+	--background: linear-gradient(90deg, #7a63ff 0%, #ff6ec7 100%);
+	--background-activated: linear-gradient(90deg, #6f5ae9 0%, #f45dae 100%);
+	--box-shadow: 0 18px 40px rgba(124, 102, 255, 0.28);
+	color: #ffffff;
+}
+
+.back-btn {
+	--border-color: #ffcfe3;
+	--border-style: solid;
+	--border-width: 1px;
+	color: #ff70aa;
+	--color-activated: #ff70aa;
+	margin-top: 4px;
+}
+
+.back-btn ion-icon {
+	margin-right: 6px;
+	font-size: 1.15rem;
+}
+
+.login-link {
+	margin-top: 32px;
+	text-align: center;
+	font-size: 0.95rem;
+	color: #817ca9;
+}
+
+.login-link a {
+	margin-left: 4px;
+	color: #7a63ff;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.login-link a:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 380px) {
+	.register-card {
+		padding: 36px 24px 30px;
+		border-radius: 24px;
+	}
+
+	.input-wrapper {
+		height: 52px;
+	}
+}

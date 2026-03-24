@@ -1,0 +1,66 @@
+<ion-content class="login-content" fullscreen>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="card-accent"></div>
+      <h1>Bem-vindo de volta</h1>
+
+      <form (ngSubmit)="onLogin()">
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+            <ion-input
+              id="login-email"
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              placeholder="seu.email@exemplo.com"
+              required
+              autocomplete="email"
+            ></ion-input>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="login-password">Senha</label>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline" aria-hidden="true"></ion-icon>
+            <ion-input
+              id="login-password"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              name="password"
+              placeholder="Sua senha"
+              required
+              autocomplete="current-password"
+            ></ion-input>
+            <ion-icon
+              class="toggle-pass"
+              [name]="getPasswordToggleIcon()"
+              (click)="togglePassword()"
+              aria-hidden="true"
+            ></ion-icon>
+          </div>
+        </div>
+
+        <div class="forgot-password">
+         <a>Esqueceu a senha? </a>
+        </div>
+
+        <ion-button type="submit" class="login-btn" expand="block">
+          Entrar
+        </ion-button>
+
+        <ion-button class="back-btn" expand="block" fill="clear" (click)="goBack()">
+          <ion-icon name="arrow-back-outline" slot="start" aria-hidden="true"></ion-icon>
+          Voltar
+        </ion-button>
+      </form>
+
+      <p class="register-link">
+        Não tem uma conta?
+        <a [routerLink]="['/register']">Criar conta</a>
+      </p>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,132 @@
+
+
+<ion-content class="ion-padding home-content" tabindex="-1">
+  <div class="panel">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      placeholder="Pesquisar música, artista..."
+      (ionInput)="searchMusic()"
+      (ionClear)="searchMusic()"
+      (ionCancel)="searchMusic()"
+      (keydown.enter)="searchMusic()"
+      class="search"
+      showCancelButton="focus"
+    ></ion-searchbar>
+
+    <!-- Results / populares shown first -->
+    <div class="results-header">
+      <h2 class="section-title" [attr.aria-live]="searchQuery ? 'polite' : null">{{ getResultsHeading() }}</h2>
+      <div class="actions" *ngIf="searchQuery">
+        <button class="query-chip" (click)="clearSearch()" aria-label="Limpar busca">{{ searchQuery }} <ion-icon name="close"></ion-icon></button>
+      </div>
+    </div>
+    <div *ngIf="!loading && searchQuery && musicList.length === 0 && !useMerged()" class="empty">Nenhuma música encontrada</div>
+    <!-- Grid principal: usa merged quando poucos ou nenhum resultado atual -->
+    <div class="recent-grid popular-grid" *ngIf="!loading && !useMerged() && ( (searchQuery && musicList.length>0) || (!searchQuery && musicList.length>0) )">
+      <div class="square-card" *ngFor="let music of musicList">
+        <div class="card-cover">
+          <ng-container *ngIf="!isFallback(music); else phCard">
+            <img [src]="getCover(music)" (error)="onImgError($event)" alt="cover" />
+          </ng-container>
+          <ng-template #phCard>
+            <div class="placeholder-card">
+              <ion-icon name="musical-notes-outline" aria-hidden="true"></ion-icon>
+            </div>
+          </ng-template>
+          <svg class="progress-svg" viewBox="0 0 56 56" width="56" height="56" aria-hidden="true">
+            <circle class="bg" cx="28" cy="28" r="24" stroke-width="3" fill="none"></circle>
+            <circle class="progress" cx="28" cy="28" r="24" stroke-width="3" fill="none"
+              [attr.stroke-dasharray]="progressCircumference"
+              [attr.stroke-dashoffset]="getDashOffset(music.preview)"
+              [class.active]="isCurrent(music.preview)"></circle>
+          </svg>
+          <button class="play small" (click)="playPreview(music); $event.stopPropagation()">
+            <ion-icon [name]="getPlayIcon(music.preview)" aria-hidden="true"></ion-icon>
+          </button>
+          <button class="fav-btn small" (click)="addToFavorites(music); $event.stopPropagation()" aria-label="Adicionar aos favoritos">
+            <ion-icon [name]="getFavoriteIcon(music)"></ion-icon>
+          </button>
+        </div>
+        <div class="card-meta">
+          <div class="card-title">{{ getTitle(music) }}</div>
+          <div class="card-artist">{{ getArtist(music) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related past found (historico de buscas similares) -->
+    
+    <div class="recent-grid merged-grid" *ngIf="useMerged()">
+      <div class="square-card" *ngFor="let m of mergedResults">
+        <div class="card-cover">
+          <ng-container *ngIf="!isFallback(m.item); else phMerged">
+            <img [src]="getCover(m.item)" (error)="onImgError($event)" alt="cover" />
+          </ng-container>
+          <ng-template #phMerged>
+            <div class="placeholder-card">
+              <ion-icon name="musical-notes-outline" aria-hidden="true"></ion-icon>
+            </div>
+          </ng-template>
+          <button class="play small" (click)="playPreview(m.item); $event.stopPropagation()">
+            <ion-icon [name]="getPlayIcon(m.item.preview)" aria-hidden="true"></ion-icon>
+          </button>
+          <button class="fav-btn small" (click)="addToFavorites(m.item); $event.stopPropagation()" aria-label="Adicionar aos favoritos">
+            <ion-icon [name]="getFavoriteIcon(m.item)"></ion-icon>
+          </button>
+          <span class="badge-history" *ngIf="m.fromHistory">histórico</span>
+        </div>
+        <div class="card-meta">
+          <div class="card-title">{{ getTitle(m.item) }}</div>
+          <div class="card-artist">{{ getArtist(m.item) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title" *ngIf="showRelatedFound() && !useMerged()">Últimos encontrados</h2>
+    <div class="recent-grid related-grid" *ngIf="showRelatedFound() && !useMerged()">
+      <div class="square-card" *ngFor="let r of relatedFound">
+        <div class="card-cover">
+          <ng-container *ngIf="!isFallback(r); else phCardRel">
+            <img [src]="getCover(r)" (error)="onImgError($event)" alt="cover" />
+          </ng-container>
+          <ng-template #phCardRel>
+            <div class="placeholder-card">
+              <ion-icon name="musical-notes-outline" aria-hidden="true"></ion-icon>
+            </div>
+          </ng-template>
+          <button class="play small" (click)="playPreview(r); $event.stopPropagation()">
+            <ion-icon [name]="getPlayIcon(r.preview)" aria-hidden="true"></ion-icon>
+          </button>
+          <button class="fav-btn small" (click)="addToFavorites(r); $event.stopPropagation()" aria-label="Adicionar aos favoritos">
+            <ion-icon [name]="getFavoriteIcon(r)"></ion-icon>
+          </button>
+        </div>
+        <div class="card-meta">
+          <div class="card-title">{{ getTitle(r) }}</div>
+          <div class="card-artist">{{ getArtist(r) }}</div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="bottom-nav">
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/home']" aria-label="Início">
+        <ion-icon name="home-outline" aria-hidden="true"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/favorites']" aria-label="Favoritos">
+        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/recent']" aria-label="Últimos ouvidos">
+        <ion-icon name="musical-notes-outline" aria-hidden="true"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="nav-btn" [routerLink]="['/profile']" aria-label="Perfil">
+        <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

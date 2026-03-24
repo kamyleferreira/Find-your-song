@@ -1,0 +1,53 @@
+<ion-content class="favorites-content">
+  <h1 class="fav-heading">Últimos ouvidos</h1>
+
+  <ion-searchbar
+    [(ngModel)]="searchQuery"
+    placeholder="Pesquisar música, artista..."
+    class="search"
+    showCancelButton="focus"
+  ></ion-searchbar>
+  <div *ngIf="viewList.length === 0" class="empty">Nenhuma música recente.</div>
+  <div class="fav-list" *ngIf="viewList.length > 0">
+    <div class="fav-row" *ngFor="let item of viewList">
+      <div class="cover-wrap">
+        <ng-container *ngIf="item && getCover(item) as cover; else ph">
+          <img class="cover" [src]="cover" (error)="onImgError($event)" alt="Capa" />
+        </ng-container>
+        <ng-template #ph>
+          <div class="placeholder-card small">
+            <ion-icon name="musical-notes-outline"></ion-icon>
+          </div>
+        </ng-template>
+      </div>
+      <div class="meta">
+        <div class="title">{{ getTitle(item) }}</div>
+        <div class="artist">{{ getArtist(item) }}</div>
+      </div>
+      <div class="actions" (click)="$event.stopPropagation()">
+        <button class="play-btn" (click)="playPreview(item)">
+          <ion-icon [name]="getPlayIcon(item.preview)" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="bottom-nav">
+      <button class="nav-btn" (click)="navigateTo('/home')" aria-label="Início">
+        <ion-icon name="home-outline"></ion-icon>
+      </button>
+      <button class="nav-btn" (click)="navigateTo('/favorites')" aria-label="Favoritos">
+        <ion-icon name="heart-outline"></ion-icon>
+      </button>
+      <button class="nav-btn active" aria-current="page" (click)="navigateTo('/recent')" aria-label="Últimos ouvidos">
+        <ion-icon name="musical-notes-outline"></ion-icon>
+      </button>
+      <button class="nav-btn" (click)="navigateTo('/profile')" aria-label="Perfil">
+        <ion-icon name="person-outline"></ion-icon>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
