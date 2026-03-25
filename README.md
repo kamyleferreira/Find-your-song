@@ -78,7 +78,7 @@ O design do aplicativo foi inicialmente desenvolvido no Figma, incluindo:
 ![Login](docs/images/login.png)
 
 ### 📝 Cadastro
-![Register](docs/images/register.png)
+![Register](docs/images/Register.png)
 
 ### 🏠 Home
 ![ProfilePage](docs/images/ProfilePage.png)
