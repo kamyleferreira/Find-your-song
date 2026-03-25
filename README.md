@@ -1,92 +1,159 @@
-# FindYourSong — Instruções de desenvolvimento
+# 🎵 Find Your Song
 
-Este README descreve como iniciar o ambiente de desenvolvimento local no Windows (PowerShell) e algumas dicas para resolver problemas intermitentes.
-
-## Requisitos
-
-- Node.js (versão recomendada: 18.x ou 20.x)
-- npm
-- Ionic CLI (opcional, o projeto usa `npx ionic` quando não está instalado globalmente)
-
-Verifique as versões:
-
-```powershell
-node -v
-npm -v
-```
-
-Se `npm` ou `node` não forem encontrados, instale o Node.js a partir de https://nodejs.org/ ou use o nvm-windows para gerenciar versões.
-
-## Comandos úteis
-
-Na raiz do projeto (`C:\Users\diihr\FindYourSong`):
-
-- Iniciar o dev-server (rápido):
-
-```powershell
-npm start
-```
-
-- Iniciar o dev-server com limpeza automática do cache (recomendado se o projeto apresentar erros de chunks/otimizações):
-
-```powershell
-npm run start:dev
-```
-
-O script `start:dev` executa um helper PowerShell que remove `.angular/cache` e inicia o servidor (usa `ionic` se estiver instalado globalmente, senão usa `npx ionic`).
-
-- Alternativa direta (se preferir):
-
-```powershell
-npx ionic serve -- --proxy-config proxy.conf.json
-```
-
-- Build de produção:
-
-```powershell
-npm run build
-```
-
-## Proxy / CORS
-
-O projeto já contém um arquivo `proxy.conf.json` que encaminha chamadas para `/api` ao endpoint do Deezer (`https://api.deezer.com`). Use o comando com `--proxy-config` (já incluído em `start`/`start:dev`) para evitar problemas de CORS no desenvolvimento.
-
-Exemplo de endpoint no app: `http://localhost:8100/api/search?q=...`
-
-## Problemas comuns e soluções
-
-- Erros de chunks, `Failed to fetch dynamically imported module`, `Outdated Optimize Dep`, ou `Cannot read properties of null (reading 'nodeType')`:
-  - Pare o dev-server (Ctrl+C).
-  - Execute `npm run start:dev` para limpar o cache e iniciar com proxy.
-  - Se persistir, remova `node_modules` e reinstale:
-
-```powershell
-rm -Recurse -Force node_modules
-npm ci
-npm run start:dev
-```
-
-- Comando `npm run start` retorna algo como "'run' não é um comando válido":
-  - Use `npm run start` ou `npm start`. Não digite apenas `run start`.
-  - Se `npm` não for encontrado, verifique o PATH ou reinstale Node.js.
-
-- Se `ionic` não for reconhecido: o script usa `npx ionic` automaticamente; você pode instalar globalmente com:
-
-```powershell
-npm install -g @ionic/cli
-```
-
-## Dicas de desenvolvimento
-
-- Mantenha o Node e dependências em versões estáveis (use `package-lock.json` e `npm ci` em máquinas novas).
-- Se colaborar em equipe, documente o comando `npm run start:dev` para evitar perda de tempo com inconsistências.
-
-## Contato
-
-Se encontrar erros novos, cole aqui as saídas do terminal e os logs do DevTools (Console e Network). Logs úteis:
-
-- Console: mensagens de erro e `console.error` do app
-- Network: requests para `/api/...` (Status, Response)
+Aplicativo mobile de recomendação musical que permite ao usuário descobrir novas músicas, artistas e álbuns de forma simples, rápida e intuitiva.
 
 ---
-README gerado automaticamente — edite conforme necessário.
+
+## 📱 Sobre o projeto
+
+O **Find Your Song** foi desenvolvido como um projeto acadêmico com o objetivo de criar uma aplicação mobile moderna e responsiva para recomendação de músicas.
+
+A aplicação consome dados de uma API externa e oferece ao usuário uma experiência fluida para explorar conteúdos musicais atualizados.
+
+---
+
+## 🎯 Objetivo
+
+Desenvolver um aplicativo mobile capaz de:
+
+* Recomendar músicas
+* Exibir artistas e álbuns
+* Facilitar a descoberta musical
+* Proporcionar uma experiência intuitiva e agradável
+
+---
+
+## 🚀 Funcionalidades
+
+* 🔍 Busca de músicas e artistas
+* 🎧 Reprodução de prévias (30 segundos)
+* ⭐ Favoritar músicas
+* 🕘 Histórico de buscas
+* 👤 Sistema de usuário (login/cadastro)
+* 📱 Interface responsiva e moderna
+
+---
+
+## 🛠️ Tecnologias utilizadas
+
+* Angular
+* Ionic
+* TypeScript
+* HTML5 & SCSS
+* API Deezer
+
+---
+
+## 🔌 API utilizada
+
+**Deezer API**
+
+A API foi escolhida por oferecer:
+
+* Informações completas sobre músicas, artistas e álbuns
+* Rankings e músicas populares
+* Prévia de reprodução das músicas
+* Fácil integração (JSON)
+
+📎 https://developers.deezer.com/api
+
+---
+
+## 🎨 Protótipo
+
+O design do aplicativo foi inicialmente desenvolvido no Figma, incluindo:
+
+* Wireframes
+* Definição de layout
+* Experiência do usuário (UX)
+
+---
+
+## 📸 Preview
+
+### 🚀 Tela inicial
+![Start](docs\images\start.png)
+
+### 🔐 Login
+![Login](docs/images/login.png)
+
+### 📝 Cadastro
+![Register](docs/images/register.png)
+
+### 🏠 Home
+![ProfilePage](docs/images/ProfilePage.png)
+
+### ⭐ Favoritos 
+![PopularSongs](docs/images/PopularSongs.png)
+
+### 🔐 Reset de senha
+![ResetPassword](docs/images/ResetPassword.png)
+![ResetPassword 2](docs/images/ResetPassword2.png)
+
+### 📝 Ouvidos Recentemente
+![RecentlyHeard](docs/images/RecentlyHeard.png)
+
+### 🔐 Página de Perfil
+![ProfilePage](docs/images/ProfilePage.png)
+
+
+
+---
+
+## 📦 Como rodar o projeto
+
+```bash
+# Clonar o repositório
+git clone https://github.com/seu-usuario/find-your-song.git
+
+# Entrar na pasta
+cd find-your-song
+
+# Instalar dependências
+npm install
+
+# Rodar o projeto
+ionic serve
+```
+
+---
+
+## 👩‍💻 Equipe
+
+* Kamyle Ferreira
+* Natielle Bacelar
+* Yasmim Almeida
+
+---
+
+## 📌 Status do projeto
+
+✅ Concluído
+🚀 Possíveis melhorias futuras:
+
+* Integração com autenticação real
+* Melhorias na UI/UX
+* Sistema de recomendação mais avançado
+
+---
+
+## 💡 Considerações finais
+
+Este projeto foi fundamental para o desenvolvimento de habilidades em:
+
+* Desenvolvimento mobile
+* Consumo de APIs
+* Organização de código
+* Trabalho em equipe
+
+---
+
+## ⭐ Contribuição
+
+Sinta-se à vontade para contribuir ou sugerir melhorias!
+
+---
+
+## 📄 Licença
+
+Este projeto é de caráter acadêmico e sem fins comerciais.
